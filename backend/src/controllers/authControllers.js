@@ -1,6 +1,23 @@
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 
+const generateAccessandRefreshToken= async (userId)=>{
+   try {
+     const user = await User.findOne({ userId })
+ 
+     const refreshtoken = user.generateRefreshToken()
+     const accesstoken = user.generateAccessToken()
+     user.refreshtoken = refreshtoken
+     await user.save({ validateBeforeSave: false })
+
+     return { accesstoken, refreshtoken }
+ 
+   } catch (error) {
+     console.log(error)
+   }
+}
+
+
 const Signup = async (req, res) => {
     const { fullname, email, password } = req.body
 
