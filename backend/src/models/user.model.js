@@ -20,9 +20,12 @@ const userSchema = new Schema({
     refreshtoken: {
         type: String
     }
-})
+}, {
+    timestamps: true
+}
+)
 
-userSchema.methods.generateAccessToken= function(){
+userSchema.methods.generateAccessToken = function () {
     return jwt.sign(
         {
             _id: this._id,
@@ -36,7 +39,7 @@ userSchema.methods.generateAccessToken= function(){
     )
 }
 
-userSchema.methods.generateRefreshToken= function(){
+userSchema.methods.generateRefreshToken = function () {
     return jwt.sign(
         {
             _id: this._id
@@ -47,6 +50,8 @@ userSchema.methods.generateRefreshToken= function(){
         }
     )
 }
+
+
 
 const User = mongoose.model("User", userSchema)
 export default User;
