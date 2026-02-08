@@ -1,19 +1,15 @@
 import express from "express"
-import dotenv from "dotenv"
-import dbConnect from "./config/dbCon.js"
-import authRoutes from "./Routes/authRoutes.js"
-import cookieParser from "cookie-parser"
+import "dotenv/config"
+import { ENV } from "./config/env.js"
+import { dbConnect } from "./config/db.js"
 
-dotenv.config()
+
+
 const app = express()
 
-const { PORT } = process.env
-
-app.use(express.json({limit: "5mb"}))
-app.use(cookieParser())
-app.use("/api/auth", authRoutes)
+const PORT = ENV.PORT || 3000
 
 dbConnect()
 app.listen(PORT, (req, res)=>{
-    console.log("Your server is running on port",PORT)
+    console.log("Server is listening on PORT", PORT)
 })
