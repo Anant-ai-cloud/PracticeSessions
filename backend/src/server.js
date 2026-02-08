@@ -9,7 +9,7 @@ const app = express()
 
 const { PORT } = process.env
 
-app.use(express.json({ limit: "5mb" }))
+app.use(express.json({limit: "5mb"}))
 app.use(cookieParser())
 app.use("/api/auth", authRoutes)
 
