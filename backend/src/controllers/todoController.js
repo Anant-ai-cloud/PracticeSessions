@@ -1,0 +1,55 @@
+import Todo from "../models/todo.model.js"
+
+const createTodo = async(req, res)=>{
+    try {
+        const { title, description, dueDate, category, completed } = req.body
+
+        if(!title || !description || !dueDate){
+            return res.status(400).json({message: "all field should be defined"})
+        }
+
+        if(title.trim() === "") return res.status(400).json({ message: "title should be valid" })
+
+        const todo = await Todo.create({
+            title,
+            description,
+            dueDate: new Date(dueDate),
+            category,
+            completed
+        })
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+
+const getUserTodos = async(req, res)=>{
+    try {
+        const id = req.user._id
+       const todos = await Todo.find({user: id}).sort({ duedate: 1 }) //sorting is easy after indexing or duedate
+       if(!todos) return res.status(400).json({message: "no todo found"})
+        return res.status(200).json({ todos })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+const getAdminTodos= async(req,res)=>{
+    try {
+        const todos = await Todo.find({}).sort({ duedate: 1 })
+        if(!todos) return res.status(400).json({message: "no todo found"})
+
+        return res.status(200).json({ todos })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "internal server error" })
+    }
+}
+export {
+    getUserTodos,
+    getAdminTodos
+}

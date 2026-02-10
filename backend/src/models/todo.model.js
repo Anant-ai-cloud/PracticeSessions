@@ -17,6 +17,7 @@ const todoSchema = new Schema({
     category: {
         type: String,
         enum: ["urgent", "non-urgent"],
+        default: "non-urgent",
         required: true
     },
     completed: {

@@ -1,9 +1,10 @@
 import express from "express"
 import "dotenv/config"
+import cookieParser from "cookie-parser"
 import { ENV } from "./config/env.js"
 import { dbConnect } from "./config/db.js"
 import authRouter from "./routes/authRoute.js"
-import cookieParser from "cookie-parser"
+import todoRouter from "./routes/todoRoute.js"
 
 
 
@@ -18,3 +19,4 @@ app.listen(PORT, (req, res)=>{
     console.log("Server is listening on PORT", PORT)
 })
 app.use("/api/auth", authRouter)
+app.use("/api/", todoRouter)
