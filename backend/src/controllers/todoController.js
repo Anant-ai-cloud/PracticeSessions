@@ -1,22 +1,22 @@
 import Todo from "../models/todo.model.js"
 
 const createTodo = async(req, res)=>{
+     const { title, description, dueDate, category, completed } = req.body
     try {
-        const { title, description, dueDate, category, completed } = req.body
-
-        if(!title || !description || !dueDate){
-            return res.status(400).json({message: "all field should be defined"})
-        }
-
-        if(title.trim() === "") return res.status(400).json({ message: "title should be valid" })
-
-        const todo = await Todo.create({
+       
+     if(!title) return res.status(400).json({ message: "title is required and should be valid" })
+      
+     const todo = await Todo.create({
             title,
             description,
             dueDate: new Date(dueDate),
             category,
             completed
         })
+
+        if(!todo) return res.status(400).json({message: "Todo not created because of some issues"})
+
+        return res.status(200).json({message: "todo created successfully"})
 
         
     } catch (error) {
@@ -50,6 +50,7 @@ const getAdminTodos= async(req,res)=>{
     }
 }
 export {
+    createTodo,
     getUserTodos,
     getAdminTodos
 }

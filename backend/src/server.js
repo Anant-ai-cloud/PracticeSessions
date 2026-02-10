@@ -19,4 +19,4 @@ app.listen(PORT, (req, res)=>{
     console.log("Server is listening on PORT", PORT)
 })
 app.use("/api/auth", authRouter)
-app.use("/api/", todoRouter)
+app.use("/api", todoRouter)
