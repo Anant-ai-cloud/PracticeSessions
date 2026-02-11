@@ -55,30 +55,31 @@ const getAdminTodos = async (req, res) => {
 }
 
 const editTodo = async (req, res) => {
+    const { title, description } = req.body
     try {
 
-        const { title, description } = req.body
-
-
         if (!title && !description) return res.status(400).json({ message: "all  field are required" })
-        
+
         const todoId = req.params.id
         const userId = req.user._id
         console.log(userId)
         const role = req.user.role
+
         const todo = await Todo.findById(todoId)
+        if (!todo) return res.status(400).json({ message: "todo not found" })
+
         const todoUserId = (todo.user).toString()
         console.log(todoUserId)
 
         if (role === "user") {
             if (todoUserId == userId) {
 
-               const updatedtodo =  await Todo.findByIdAndUpdate(
+                const updatedtodo = await Todo.findByIdAndUpdate(
                     todoId,
                     {
                         $set: {
-                            title: title? title: todo.title,
-                            description: description? description: todo.description
+                            title: title ? title : todo.title,
+                            description: description ? description : todo.description
                         }
                     },
                     { new: true }
@@ -92,18 +93,18 @@ const editTodo = async (req, res) => {
 
         }
 
-       const updatedtodo = await Todo.findByIdAndUpdate(
-           todoId,
-           {
-             $set: {
-                title: title? title: todo.title,
-                description: description? description: todo.description 
-             }
-           },
-           { new: true }
-       ).select("-password")
+        const updatedtodo = await Todo.findByIdAndUpdate(
+            todoId,
+            {
+                $set: {
+                    title: title ? title : todo.title,
+                    description: description ? description : todo.description
+                }
+            },
+            { new: true }
+        ).select("-password")
 
-       return res.status(200).json(updatedtodo, "todo updated successfully")
+        return res.status(200).json(updatedtodo, "todo updated successfully")
 
 
 
@@ -114,11 +115,46 @@ const editTodo = async (req, res) => {
     }
 }
 
+const deleteTodo = async (req, res) => {
+
+    try {
+
+        const todoId = req.params.id
+        const userId = req.user._id
+        const role = req.user.role
+
+        const todo = await Todo.findById(todoId)
+        if (!todo) return res.status(400).json({ message: "todo not found" })
+
+        const todoUserId = (todo.user).toString()
+
+        if (role === "user") {
+            if (userId === todoUserId) {
+
+                const deleted = await Todo.findByIdAndDelete(todoId)
+                if (!deleted) return res.status(400).json({ message: "can'nt delete the todo due to some issue" })
+                return res.status(200).json({ message: "Todo deleted successfully" })
+            } else {
+                return res.status(400).json({ message: "user can delete their own todo only" })
+            }
+        }
+
+        const deleted = await Todo.findByIdAndDelete(todoId)
+        if (!deleted) return res.status(400).json({ message: "can't delete the todo due to some issue" })
+
+        return res.status(200).json({ message: "Todo deleted successfully" })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "internal server error" })
+    }
+}
 
 
 export {
     createTodo,
     getUserTodos,
     getAdminTodos,
-    editTodo
+    editTodo,
+    deleteTodo
 }
