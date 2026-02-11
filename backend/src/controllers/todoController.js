@@ -5,13 +5,17 @@ const createTodo = async(req, res)=>{
     try {
        
      if(!title) return res.status(400).json({ message: "title is required and should be valid" })
+
+        const userId = req.user._id
       
      const todo = await Todo.create({
             title,
             description,
             dueDate: new Date(dueDate),
             category,
-            completed
+            completed,
+            user: userId
+
         })
 
         if(!todo) return res.status(400).json({message: "Todo not created because of some issues"})
@@ -30,7 +34,7 @@ const getUserTodos = async(req, res)=>{
         const id = req.user._id
        const todos = await Todo.find({user: id}).sort({ duedate: 1 }) //sorting is easy after indexing or duedate
        if(!todos) return res.status(400).json({message: "no todo found"})
-        return res.status(200).json({ todos })
+        return res.status(200).json( todos )
         
     } catch (error) {
         console.log(error)
@@ -42,13 +46,35 @@ const getAdminTodos= async(req,res)=>{
         const todos = await Todo.find({}).sort({ duedate: 1 })
         if(!todos) return res.status(400).json({message: "no todo found"})
 
-        return res.status(200).json({ todos })
+        return res.status(200).json( todos )
         
     } catch (error) {
         console.log(error)
         return res.status(500).json({ message: "internal server error" })
     }
 }
+
+const editUserTodo = async(req, res)=>{
+    try {
+        
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+        
+    }
+}
+
+const editAnyTodo = async(req, res)=>{
+    try {
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+
+
 export {
     createTodo,
     getUserTodos,
