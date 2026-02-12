@@ -72,7 +72,7 @@ const editTodo = async (req, res) => {
         console.log(todoUserId)
 
         if (role === "user") {
-            if (todoUserId == userId) {
+            if (todoUserId == userId) {  //triple Quotes are not working fix this issue
 
                 const updatedtodo = await Todo.findByIdAndUpdate(
                     todoId,
@@ -129,7 +129,7 @@ const deleteTodo = async (req, res) => {
         const todoUserId = (todo.user).toString()
 
         if (role === "user") {
-            if (userId === todoUserId) {
+            if (userId === todoUserId) {  // triple quotes are not checking correctly fix this issue
 
                 const deleted = await Todo.findByIdAndDelete(todoId)
                 if (!deleted) return res.status(400).json({ message: "can'nt delete the todo due to some issue" })
