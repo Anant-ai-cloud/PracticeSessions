@@ -1,4 +1,5 @@
 import Todo from "../models/todo.model.js"
+import User from "../models/user.model.js"
 
 const createTodo = async (req, res) => {
     const { title, description, dueDate, category, completed } = req.body
@@ -61,7 +62,7 @@ const editTodo = async (req, res) => {
         if (!title && !description) return res.status(400).json({ message: "all  field are required" })
 
         const todoId = req.params.id
-        const userId = req.user._id
+        const userId = (req.user._id).toString()
         console.log(userId)
         const role = req.user.role
 
@@ -72,8 +73,7 @@ const editTodo = async (req, res) => {
         console.log(todoUserId)
 
         if (role === "user") {
-            if (todoUserId == userId) {  //triple Quotes are not working fix this issue
-
+            if (todoUserId == userId) {  
                 const updatedtodo = await Todo.findByIdAndUpdate(
                     todoId,
                     {
@@ -84,7 +84,7 @@ const editTodo = async (req, res) => {
                     },
                     { new: true }
 
-                ).select("-password")
+                )
 
                 return res.status(200).json(updatedtodo, "todo updated successfully")
             } else {
@@ -120,7 +120,7 @@ const deleteTodo = async (req, res) => {
     try {
 
         const todoId = req.params.id
-        const userId = req.user._id
+        const userId = (req.user._id).toString()
         const role = req.user.role
 
         const todo = await Todo.findById(todoId)
@@ -129,7 +129,7 @@ const deleteTodo = async (req, res) => {
         const todoUserId = (todo.user).toString()
 
         if (role === "user") {
-            if (userId === todoUserId) {  // triple quotes are not checking correctly fix this issue
+            if (userId === todoUserId) {  
 
                 const deleted = await Todo.findByIdAndDelete(todoId)
                 if (!deleted) return res.status(400).json({ message: "can'nt delete the todo due to some issue" })
@@ -150,11 +150,50 @@ const deleteTodo = async (req, res) => {
     }
 }
 
+const getAllUsers = async(req, res)=>{
+    try {
+        const users = await User.find({}).sort({ createdAt: 1 })
+
+        if(!users) return res.status(400).json({message: "Unable to find users"})
+        
+            return res.status(200).json(users)
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+
+const changeUserStatus = async(req, res)=>{
+    try {
+
+        const userId = req.params.id
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+                $set: {
+                    role: "user"? "admin" : "user"
+                }
+            },
+            { new: true }
+        ).select("-password")
+        if(!updatedUser) return res.status(400).json({message: "User's status cannot get edited"})
+
+        return res.status(200).json(updatedUser, "User's status edited successfully")
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+
+}
 
 export {
     createTodo,
     getUserTodos,
     getAdminTodos,
     editTodo,
-    deleteTodo
+    deleteTodo,
+    getAllUsers,
+    changeUserStatus
 }

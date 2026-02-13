@@ -1,5 +1,5 @@
 import express from "express"
-import { createTodo, getUserTodos, getAdminTodos, editTodo, deleteTodo } from "../controllers/todoController.js"
+import { createTodo, getUserTodos, getAdminTodos, editTodo, deleteTodo, getAllUsers, changeUserStatus } from "../controllers/todoController.js"
 import verifyJwt from "../middlewares/verifyJwt.js"
 import checkingRole from "../middlewares/checkingRole.js"
 
@@ -20,6 +20,12 @@ router.patch("/update/:id", editTodo )
 
 //delete
 router.delete("/delete/:id", deleteTodo)
+
+//for admin get all users
+router.get("/admin/users", checkingRole, getAllUsers)
+
+//for admin change status
+router.post("/admin/updatestatus", checkingRole, changeUserStatus)
 
 
 export default router;
