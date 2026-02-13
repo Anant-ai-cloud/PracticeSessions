@@ -9,23 +9,23 @@ const router = express.Router()
 router.use(verifyJwt) 
 
 //create
-router.post("/create/todo", createTodo)
+router.post("/todos", createTodo)
 
 //view
 router.get("/user/todos", getUserTodos)
 router.get("/admin/todos", checkingRole, getAdminTodos)
 
 //update
-router.patch("/update/:id", editTodo )
+router.put("/todos/:id", editTodo )
 
 //delete
-router.delete("/delete/:id", deleteTodo)
+router.delete("/todos/:id", deleteTodo)
 
 //for admin get all users
 router.get("/admin/users", checkingRole, getAllUsers)
 
 //for admin change status
-router.post("/admin/updatestatus", checkingRole, changeUserStatus)
+router.post("/admin/users/:id", checkingRole, changeUserStatus)
 
 
 export default router;

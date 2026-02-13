@@ -22,13 +22,13 @@ const generateToken = (userId, role) => {
 const Signup = async (req, res) => {
     const { email, username, password, role } = req.body
     try {
-        if ([email, username, password].some(field => !field || field.trim() === "")) {
-            return res.status(400).json({ message: "all fields are neccessary with valid values" })
-        }
+        // if ([email, username, password].some(field => !field || field.trim() === "")) {
+        //     return res.status(400).json({ message: "all fields are neccessary with valid values" })
+        // }
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-        if (!emailRegex.test(email)) return res.status(400).json({ message: "email should be valid" })
-        if (password.length < 8) return res.status(400).json({ message: "Password's length should be minimum 8" })
+        // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        // if (!emailRegex.test(email)) return res.status(400).json({ message: "email should be valid" })
+        // if (password.length < 8) return res.status(400).json({ message: "Password's length should be minimum 8" })
 
         const user = await User.findOne({
             $or: [{ email }, { username }]
@@ -67,13 +67,13 @@ const Login = async (req, res) => {
     const { email, password } = req.body
 
     try {
-        if ([email, password].some(field => !field || field.trim() === "")) {
-            return res.status(400).json({ message: "all fields are required with valid values" })
-        }
+        // if ([email, password].some(field => !field || field.trim() === "")) {
+        //     return res.status(400).json({ message: "all fields are required with valid values" })
+        // }
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-        if (!emailRegex.test(email)) return res.status(400).json({ message: "email should be valid" })
-        if (password.length < 8) return res.status(400).json({ message: "password's length should be of minimum 8" })
+        // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        // if (!emailRegex.test(email)) return res.status(400).json({ message: "email should be valid" })
+        // if (password.length < 8) return res.status(400).json({ message: "password's length should be of minimum 8" })
 
         const user = await User.findOne({ email })
         if (!user) return res.status(400).json({ message: "user not found" })

@@ -170,12 +170,20 @@ const changeUserStatus = async(req, res)=>{
         const userId = req.params.id
         const updatedUser = await User.findByIdAndUpdate(
             userId,
+            [
             {
                 $set: {
-                    role: "user"? "admin" : "user"
+                    role:{
+                        $cond:{
+                            if: { $eq: ["$role", "user"]},
+                            then: "admin",
+                            else: "user"
+                        }
+                    }
                 }
             },
-            { new: true }
+            ],
+            { new: true, updatePipeline: true }
         ).select("-password")
         if(!updatedUser) return res.status(400).json({message: "User's status cannot get edited"})
 
