@@ -267,6 +267,73 @@ const getCompletedTodos = async(req, res)=>{
     }
 }
 
+const getUrgentTodos = async(req, res)=>{
+    try {
+
+         const role = req.user.role
+         const userId = (req.user.id).toString()
+         const urgentTodos = await Todo.find({category: "urgent"})
+         if(urgentTodos.length === 0) return res.status(400).json({message: "no urgent todos found"})
+
+         if( role === "user" ){
+          
+            const myUrgentTodos = []
+            
+            for(let i =0 ; i < urgentTodos.length; i++){
+
+                const todoUserId = (urgentTodos[i].user).toString()
+                if(userId === todoUserId){
+                    myUrgentTodos.push(urgentTodos[i])
+                }
+            }
+
+           if(myUrgentTodos.length === 0) return res.status(400).json({message: "You have no urgent todos"})
+
+            return res.status(200).json(myUrgentTodos)
+
+         }
+        
+         return res.status(200).json(urgentTodos)
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+
+const getNonUrgentTodos = async(req, res)=>{
+    try {
+        const role = req.user.role
+        const userId = (req.user.id).toString()
+        const nonUrgentTodos = await Todo.find({category: "non-urgent"})
+
+        if(nonUrgentTodos.length === 0) return res.status(200).json({message: "no non-urgent todos found"})
+
+        if(role === "user"){ 
+
+            const myNonUrgentTodos =[]
+
+            for(let i=0; i < nonUrgentTodos.length; i++){
+                const todoUserId = (nonUrgentTodos[i].user).toString()
+                if(userId === todoUserId){
+                    myNonUrgentTodos.push(nonUrgentTodos[i])
+                }
+            }
+            if(myNonUrgentTodos.length === 0) return res.status(400).json({message: "You have no non-urgent todos"})
+
+            return res.status(200).json(myNonUrgentTodos)
+        }
+
+        return res.status(200).json(nonUrgentTodos)
+
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+
+
 
 export {
     createTodo,
@@ -277,5 +344,7 @@ export {
     getAllUsers,
     changeUserStatus,
     todoCompleted,
-    getCompletedTodos
+    getCompletedTodos,
+    getUrgentTodos,
+    getNonUrgentTodos
 }
