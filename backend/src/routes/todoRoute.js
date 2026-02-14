@@ -1,5 +1,5 @@
 import express from "express"
-import { createTodo, getUserTodos, getAdminTodos, editTodo, deleteTodo, getAllUsers, changeUserStatus, todoCompleted, getCompletedTodos, getUrgentTodos, getNonUrgentTodos } from "../controllers/todoController.js"
+import { createTodo, getUserTodos, getAdminTodos, editTodo, deleteTodo, getAllUsers, changeUserStatus, todoCompleted, getCompletedTodos, getUrgentTodos, getNonUrgentTodos, deleteUser } from "../controllers/todoController.js"
 import verifyJwt from "../middlewares/verifyJwt.js"
 import checkingRole from "../middlewares/checkingRole.js"
 
@@ -39,6 +39,8 @@ router.patch("/completed/todo/:id", todoCompleted)
  //get non urgent todos
  router.get("/non-urgent/todos", getNonUrgentTodos)
 
+ //delete particular user
+ router.delete("/admin/user/:id", checkingRole, deleteUser)
 
 
 
