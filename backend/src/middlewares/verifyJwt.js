@@ -10,7 +10,7 @@ const verifyJwt = async (req, res, next) => {
         const decodedToken = jwt.verify(token, ENV.TOKEN_SECRET)
         if (!decodedToken) return res.status(400).json({ message: "invalid token" })
 
-        const user = await User.findById(decodedToken._id)
+        const user = await User.findById(decodedToken._id).select("-password")
         if (!user) return res.status(400).json({ message: "user not found" })
 
         req.user = user

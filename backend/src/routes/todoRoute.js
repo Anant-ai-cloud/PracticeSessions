@@ -1,5 +1,5 @@
 import express from "express"
-import { createTodo, getUserTodos, getAdminTodos, editTodo, deleteTodo, getAllUsers, changeUserStatus } from "../controllers/todoController.js"
+import { createTodo, getUserTodos, getAdminTodos, editTodo, deleteTodo, getAllUsers, changeUserStatus, todoCompleted, getCompletedTodos } from "../controllers/todoController.js"
 import verifyJwt from "../middlewares/verifyJwt.js"
 import checkingRole from "../middlewares/checkingRole.js"
 
@@ -26,6 +26,8 @@ router.get("/admin/users", checkingRole, getAllUsers)
 
 //for admin change status
 router.post("/admin/users/:id", checkingRole, changeUserStatus)
+
+
 
 
 export default router;

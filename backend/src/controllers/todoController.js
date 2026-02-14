@@ -196,6 +196,77 @@ const changeUserStatus = async(req, res)=>{
 
 }
 
+const todoCompleted= async(req, res)=>{
+    try {
+        const todoId =  req.params.id
+        const userId = (req.user.id).toString()
+        const todo = await Todo.findById(todoId)
+        const todoUserId = (todo.user).toString()
+        const role = req.user.role
+
+        if( role === "user" ){
+            if( userId === todoUserId ){
+                const updatedTodo = await Todo.findByIdAndUpdate(
+                    todoId,
+                    {
+                        $set:{
+                            completed: true
+                        }
+                    },
+                    { new: true}
+                )
+                if(!updatedTodo) return res.status(400).json({message: "unable to find todo"})
+
+                return res.status(200).json(updatedTodo)
+            } else{
+                return res.status(400).json({message: "user can mark only their own todo"})
+            }
+
+        }
+        const updatedTodo = await Todo.findByIdAndUpdate(
+            todoId,
+            {
+                $set:{
+                    completed: true
+                }
+            },
+            { new: true }
+        )
+        if(!updatedTodo) return res.status(400).json({message: "unable to find todo"})
+
+        return res.status(200).json(updatedTodo)
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: "internal server error"})
+    }
+}
+
+const getCompletedTodos = async(req, res)=>{
+    try {
+
+       const userId = req.user.id
+       const role = req.user.role
+
+       if(role === "user"){
+
+        const completedTodos = await Todo.find({ user: userId, completed: true})
+
+        if(!completedTodos) return res.status(400).json({message: "no todo is completed"})
+
+        return res.status(200).json(completedTodos)
+       }
+
+        const completedTodos = await Todo.find({ completed: true })
+        if(!completedTodos) return res.status(400).json({message: "no todo is completed"})
+        return res.status(200).json(completedTodos)
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({message: " internal server error "})
+    }
+}
+
 
 export {
     createTodo,
@@ -204,5 +275,7 @@ export {
     editTodo,
     deleteTodo,
     getAllUsers,
-    changeUserStatus
+    changeUserStatus,
+    todoCompleted,
+    getCompletedTodos
 }
