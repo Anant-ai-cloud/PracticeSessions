@@ -9,6 +9,8 @@ import AdminDashboard from './pages/AdminDashboard.jsx'
 import CreateTodo from './pages/CreateTodo.jsx'
 import Login from './pages/Login.jsx'
 import Registration from './pages/Registration.jsx'
+import store from './store/Store.js'
+import { Provider } from "react-redux"
 
   const router = createBrowserRouter([
   {
@@ -49,7 +51,9 @@ import Registration from './pages/Registration.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     
+    <Provider store={store}>
     <RouterProvider router={router}/>
+    </Provider>
     
   </StrictMode>,
 )
