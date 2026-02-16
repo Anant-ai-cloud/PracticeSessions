@@ -11,47 +11,78 @@ import Login from './pages/Login.jsx'
 import Registration from './pages/Registration.jsx'
 import store from './store/Store.js'
 import { Provider } from "react-redux"
+import Authprotect from './components/authProtect.jsx'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>,
     children: [
+      
+      {
+        path:"/",
+        element: 
+
+        <Authprotect authentication={true}>
+        <CreateTodo/>
+        </Authprotect>
+
+      },
       {
         path: "/signup",
-        element: <Registration/>
+        element: 
+
+        <Authprotect authentication={false}>
+        <Registration/>
+        </Authprotect>
+
       },
       {
         path: "/login",
-        element: <Login/>
+        element: 
+        
+        <Authprotect authentication= {false}>
+        <Login/>
+        </Authprotect>
+
       },
       {
         path: "/usertodos",
-        element: <UserDashboard/>
+        element:
+        
+        <Authprotect authentication={true}>
+        <UserDashboard/>
+        </Authprotect>
+
       },
       {
         path: "/admintodos",
-        element: <AdminTodoDashboard/>
-      },
-      {
-        path:"/create",
-        element: <CreateTodo/>
+        element:
+        
+        <Authprotect authentication={true}>
+        <AdminTodoDashboard/>
+        </Authprotect>
+
       },
       {
         path: "/admindashboard",
-        element: <AdminDashboard/>
+        element: 
+        
+        <Authprotect authentication= {true}>
+        <AdminDashboard/>
+        </Authprotect>
+        
       }
     ]
   }
 ])
 
 
- 
+ //all pages have access of the store
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-
     <Provider store={store}>
-    <RouterProvider router={router}/>        //all pages have access of the store
+    <RouterProvider router={router}/>        
     </Provider>
     
     
