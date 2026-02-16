@@ -12,7 +12,7 @@ import Registration from './pages/Registration.jsx'
 import store from './store/Store.js'
 import { Provider } from "react-redux"
 
-  const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>,
@@ -20,12 +20,11 @@ import { Provider } from "react-redux"
       {
         path: "/signup",
         element: <Registration/>
-      }, 
+      },
       {
         path: "/login",
         element: <Login/>
-
-      }, 
+      },
       {
         path: "/usertodos",
         element: <UserDashboard/>
@@ -35,25 +34,26 @@ import { Provider } from "react-redux"
         element: <AdminTodoDashboard/>
       },
       {
-        path: "/create",
+        path:"/create",
         element: <CreateTodo/>
       },
       {
         path: "/admindashboard",
         element: <AdminDashboard/>
       }
-
     ]
-    
   }
 ])
 
+
+ 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    
+
     <Provider store={store}>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router}/>        //all pages have access of the store
     </Provider>
+    
     
   </StrictMode>,
 )
