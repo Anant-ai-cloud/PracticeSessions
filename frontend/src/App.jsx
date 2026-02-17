@@ -1,19 +1,17 @@
 import react, { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
+import Navbar from "./components/Navbar.jsx"
 
 
 function App() {
 
- const [ Dark, setDark ] = useState(window.matchMedia("(prefers-color-scheme: dark)").matches)
- console.log(Dark)
-
-  // useEffect(()=>{
-
-  // }, [theme])
+  // window.matchMedia("(prefers-color-scheme: dark)").matches    fetches mode from browser
+ 
   
   return (
     <>
     <div>
+    <Navbar/>
     <Outlet/>
     </div>
     
