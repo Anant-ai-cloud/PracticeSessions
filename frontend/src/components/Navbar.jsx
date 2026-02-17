@@ -21,8 +21,8 @@ useEffect(()=>{
   }
 },[theme])
   return (
-    <div className="navbar bg-base-100 dark:bg-gray-800  shadow-sm">
-      <div className="navbar-start">
+    <div className="navbar bg-base-100 dark:bg-gray-800 bg-yellow-50 shadow-sm">
+      <div className="navbar-start static">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle dark:hover:bg-slate-300">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black dark:text-white " fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /> </svg>
