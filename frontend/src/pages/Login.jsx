@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
 import { loginUser } from '../setUp/authThunks.js'
 import { useDispatch } from "react-redux"
+import { Navigate } from 'react-router-dom'
 
 function Login() {
 
@@ -13,6 +14,7 @@ function Login() {
   dispatch(loginUser(formData))
 
   }
+  Navigate("/")
   
   return (
 

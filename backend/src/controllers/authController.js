@@ -82,6 +82,7 @@ const Login = async (req, res) => {
         if (!passwordCorrect) return res.status(400).json({ message: "invalid credentials" })
 
         const token = generateToken(user._id, user.role)
+        console.log("logging")
 
         return res.status(200)
             .cookie("token", token)
