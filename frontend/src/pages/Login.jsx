@@ -1,24 +1,25 @@
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
+import { loginUser } from '../setUp/authThunks.js'
+import { useDispatch } from "react-redux"
 
 function Login() {
 
   const { register, handleSubmit, formState: { error } } = useForm()
-  
-  const login = async(data)=>{
-    try {
-      
-    } catch (error) {
-      console.log(error.message)
+  const dispatch = useDispatch()
 
-    }
+  const submit = (formData)=>{
+    
+  dispatch(loginUser(formData))
+
   }
+  
   return (
 
     <div className='relative min-h-screen w-full dark:bg-gray-600'>
 
       <div className='absolute top-[230px] left-[530px]'>
-        <form className='border p-5 dark:border-white border-black' onSubmit={handleSubmit(login)} >
+        <form className='border p-5 dark:border-white border-black' onSubmit={handleSubmit(submit)} >
           <div className='m-5'>
             <input type="email" placeholder='write your email' className='w-96 p-3 h-10 border border-black dark:border-white dark:bg-gray-700 dark:text-white'
               {...register("email", {
