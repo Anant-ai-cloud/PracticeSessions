@@ -18,7 +18,7 @@ function Authprotect({ children, authentication = true }) {
     if (authentication && authStatus != authentication) navigate("/login")
     else if (!authentication && authStatus != authentication) {
      if(user.role === "user") navigate("/usertodos")
-      navigate("/admintodos")
+     else navigate("/admintodos")
 
     }
     setLoading(false)
