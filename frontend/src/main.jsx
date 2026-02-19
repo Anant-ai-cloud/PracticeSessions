@@ -12,6 +12,7 @@ import Registration from './pages/Registration.jsx'
 import store from './store/Store.js'
 import { Provider } from "react-redux"
 import Authprotect from './components/authProtect.jsx'
+import { Toaster } from 'react-hot-toast'
 
 const router = createBrowserRouter([
   {
@@ -82,8 +83,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router}/>        
+    <RouterProvider router={router}/>     
+     <Toaster/>   
     </Provider>
+   
     
     
   </StrictMode>,

@@ -11,7 +11,7 @@ function Authprotect({ children, authentication = true }) {
   useEffect(() => {
 
     if (authentication && authStatus != authentication) navigate("/login")
-    else if (!authentication && authStatus != authentication) navigate("/create")
+    else if (!authentication && authStatus != authentication) navigate("/")
     setLoading(false)
 
   }, [navigate, authStatus, authentication])

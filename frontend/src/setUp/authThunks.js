@@ -12,7 +12,8 @@ export const loginUser = (credentials)=> async(dispatch)=>{
 
         
     } catch (error) {
-        toast.error(error.message)
+        console.log(error.response?.data)
+        toast.error(error.response?.data?.message || "Login failed")
         
     }finally{
         dispatch(setLogging(false))
