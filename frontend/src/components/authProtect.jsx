@@ -6,18 +6,27 @@ function Authprotect({ children, authentication = true }) {
 
   const navigate = useNavigate()
   const authStatus = useSelector(state => state.auth.status)
+  console.log(authStatus)
+  const user = useSelector(state=> state.auth.userData)
+ 
+  
+  
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
 
     if (authentication && authStatus != authentication) navigate("/login")
-    else if (!authentication && authStatus != authentication) navigate("/")
+    else if (!authentication && authStatus != authentication) {
+     if(user.role === "user") navigate("/usertodos")
+      navigate("/admintodos")
+
+    }
     setLoading(false)
 
-  }, [navigate, authStatus, authentication])
+  }, [navigate, authStatus, authentication ])
 
-  return loading?
-  <h1>Loading...</h1>: <> { children } </>
+  return loading ?
+    <h1>Loading...</h1> : <> {children} </>
 }
 
 export default Authprotect

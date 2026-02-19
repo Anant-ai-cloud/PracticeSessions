@@ -7,6 +7,9 @@ export const loginUser = (credentials)=> async(dispatch)=>{
     try {
         const res = await axiosInstance.post("/auth/login", credentials)
 
+        if(!res)  console.log("some error occured") 
+         
+       
         dispatch(login({ userData: res.data }))
         toast.success("Logged in successfully")
 

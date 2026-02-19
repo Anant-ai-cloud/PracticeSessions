@@ -14,7 +14,7 @@ function Login() {
   dispatch(loginUser(formData))
 
   }
-  Navigate("/")
+  
   
   return (
 

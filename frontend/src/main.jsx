@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { RouterProvider, createBrowserRouter} from "react-router-dom" 
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import AdminTodoDashboard from './pages/todoDashboard/AdminTodoDashboard.jsx'
 import UserDashboard from './pages/todoDashboard/UserDashboard.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
@@ -13,81 +13,88 @@ import store from './store/Store.js'
 import { Provider } from "react-redux"
 import Authprotect from './components/authProtect.jsx'
 import { Toaster } from 'react-hot-toast'
+import { persistor } from './store/Store.js'
+import { PersistGate } from 'redux-persist/integration/react'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
     children: [
-      
-      {
-        path:"/",
-        element: 
 
-        <Authprotect authentication={true}>
-        <CreateTodo/>
-        </Authprotect>
+      {
+        path: "/",
+        element:
+
+          <Authprotect authentication={true}>
+            <CreateTodo />
+          </Authprotect>
 
       },
       {
         path: "/signup",
-        element: 
+        element:
 
-        <Authprotect authentication={false}>
-        <Registration/>
-        </Authprotect>
+          <Authprotect authentication={false}>
+            <Registration />
+          </Authprotect>
 
       },
       {
         path: "/login",
-        element: 
-        
-        <Authprotect authentication= {false}>
-        <Login/>
-        </Authprotect>
+        element:
+
+          <Authprotect authentication={false}>
+            <Login />
+          </Authprotect>
 
       },
       {
         path: "/usertodos",
         element:
-        
-        <Authprotect authentication={true}>
-        <UserDashboard/>
-        </Authprotect>
+
+          <Authprotect authentication={true}>
+            <UserDashboard />
+          </Authprotect>
 
       },
       {
         path: "/admintodos",
         element:
-        
-        <Authprotect authentication={true}>
-        <AdminTodoDashboard/>
-        </Authprotect>
+
+          <Authprotect authentication={true}>
+            <AdminTodoDashboard />
+          </Authprotect>
 
       },
       {
         path: "/admindashboard",
-        element: 
-        
-        <Authprotect authentication= {true}>
-        <AdminDashboard/>
-        </Authprotect>
-        
+        element:
+
+          <Authprotect authentication={true}>
+            <AdminDashboard />
+          </Authprotect>
+
       }
     ]
   }
 ])
 
 
- //all pages have access of the store
+//all pages have access of the store
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router}/>     
-     <Toaster/>   
+
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
+      
+      <Toaster />
+
     </Provider>
-   
-    
-    
+
+
+
   </StrictMode>,
 )
