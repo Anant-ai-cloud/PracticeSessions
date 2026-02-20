@@ -26,11 +26,12 @@ const router = createBrowserRouter([
         path: "/",
         element:
 
-          <Authprotect authentication={true}>
-            <CreateTodo />
+          <Authprotect authentication={false}>
+            <Login />
           </Authprotect>
 
       },
+
       {
         path: "/signup",
         element:
@@ -40,15 +41,16 @@ const router = createBrowserRouter([
           </Authprotect>
 
       },
-      {
-        path: "/login",
+       {
+        path: "/create",
         element:
 
-          <Authprotect authentication={false}>
-            <Login />
+          <Authprotect authentication={true}>
+            <CreateTodo />
           </Authprotect>
 
       },
+      
       {
         path: "/usertodos",
         element:

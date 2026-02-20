@@ -15,7 +15,7 @@ function Authprotect({ children, authentication = true }) {
 
   useEffect(() => {
 
-    if (authentication && authStatus != authentication) navigate("/login")
+    if (authentication && authStatus != authentication) navigate("/")
     else if (!authentication && authStatus != authentication) {
      if(user.role === "user") navigate("/usertodos")
      else navigate("/admintodos")
