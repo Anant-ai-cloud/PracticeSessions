@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
@@ -13,8 +13,7 @@ import store from './store/Store.js'
 import { Provider } from "react-redux"
 import Authprotect from './components/authProtect.jsx'
 import { Toaster } from 'react-hot-toast'
-import { persistor } from './store/Store.js'
-import { PersistGate } from 'redux-persist/integration/react'
+
 
 const router = createBrowserRouter([
   {
@@ -86,17 +85,11 @@ const router = createBrowserRouter([
 //all pages have access of the store
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+
     <Provider store={store}>
-
-      <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
-      </PersistGate>
-      
+    <RouterProvider router={router} />
       <Toaster />
+     </Provider>
 
-    </Provider>
-
-
-
-  </StrictMode>,
+ </StrictMode>,
 )

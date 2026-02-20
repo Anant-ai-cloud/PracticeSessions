@@ -3,7 +3,7 @@ import toast from "react-hot-toast"
 import axiosInstance from "./axios.js";
 
 export const loginUser = (credentials)=> async(dispatch)=>{
-    dispatch(setLogging(true))
+    
     try {
         const res = await axiosInstance.post("/auth/login", credentials)
 
@@ -25,9 +25,26 @@ export const loginUser = (credentials)=> async(dispatch)=>{
 export const logoutUser = ()=>(dispatch)=>{
     try {
         dispatch(logout())
-        toast.success("loggedout successfully")
+        toast.success("logged out successfully")
     } catch (error) {
         toast.error(error.message)
     }
 
+}
+
+export const loggedIn = ()=> async(dispatch)=>{
+   
+    try {
+
+        const res = await axiosInstance.get("/auth/check")
+        if(!res) toast.error("Can't authenticated you")
+        
+        dispatch(login({userData: res.data}))
+        
+    } catch (error) {
+        console.log(error)
+        toast.error(error.message)
+    }finally{
+        dispatch(setLogging(false))
+    }
 }

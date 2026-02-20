@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Pageloading from '../setUp/pageLoading.jsx'
 
 function Authprotect({ children, authentication = true }) {
 
@@ -9,24 +10,24 @@ function Authprotect({ children, authentication = true }) {
   console.log(authStatus)
   const user = useSelector(state=> state.auth.userData)
  
+ 
   
-  
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
 
+   
     if (authentication && authStatus != authentication) navigate("/")
     else if (!authentication && authStatus != authentication) {
      if(user.role === "user") navigate("/usertodos")
      else navigate("/admintodos")
 
     }
-    setLoading(false)
+    
 
-  }, [navigate, authStatus, authentication ])
+  }, [navigate, authStatus, authentication])
 
-  return loading ?
-    <h1>Loading...</h1> : <> {children} </>
+  
+  return <> {children} </>
 }
 
 export default Authprotect
