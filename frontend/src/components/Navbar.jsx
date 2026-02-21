@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import {useSelector} from "react-redux"
 
 function Navbar() {
 
 const [theme, setTheme ] =useState( localStorage.getItem("theme")? localStorage.getItem("theme"): "light" )  //make sure theme store light/dark across refresh
 const rootElement = document.documentElement
+
+const authStatus = useSelector( (state)=> state.auth.status )
+const navigate = useNavigate()
 
 useEffect(()=>{
   if(theme==="dark"){
@@ -21,26 +25,71 @@ useEffect(()=>{
 
   }
 },[theme])
+
+const navItems = [
+
+  {
+    name:"login",
+    url: "/",
+    active: !authStatus
+
+  },
+
+  {
+    name: "signup",
+    url: "/signup",
+    active: !authStatus
+  },
+
+  {
+    name: "Userdashboard",
+    url: "/usertodos",
+    active: authStatus
+  },
+
+  {
+    name: "Admindashboard",
+    url: "/admintodos",
+    active: authStatus
+  }, 
+
+  {
+    name: "createTodo",
+    url: "/create",
+    active: authStatus
+  },
+
+  {
+
+    name: "AdminSection",
+    url: "/admindashboard",
+    active: authStatus
+
+  }
+]
   return (
-    <div className="navbar bg-base-100 dark:bg-gray-800 bg-yellow-50 shadow-sm">
-      <div className="navbar-start static">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle dark:hover:bg-slate-300">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black dark:text-white " fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /> </svg>
-          </div>
-          <ul
-            tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li><a>Homepage</a></li>
-            <li><a>Portfolio</a></li>
-            <li><a>About</a></li>
-          </ul>
-        </div>
-      </div>
+    <div className="navbar bg-base-100 dark:bg-gray-800 bg-yellow-50 shadow-sm  justify-between">
+     
       <div className="navbar-center">
         <a className="text-xl dark:text-white font-bold">Todo App</a>
       
       </div>
+
+       <ul className='flex '>
+      {navItems.map((item)=>
+      
+      item.active ? (
+        <li key={item.name}>
+
+          <button onClick={()=> navigate(item.url)}>
+            {item.name}
+          </button>
+        </li> ) : null
+      
+      )}
+      </ul>
+
+
       <div className="navbar-end">
         
         <Link to={"/"} className='btn bg-gray-500 rounded-lg text-black mr-2'>Login</Link>
