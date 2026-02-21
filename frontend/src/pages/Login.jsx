@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form"
 import { loginUser } from '../setUp/authThunks.js'
 import { useDispatch } from "react-redux"
 import { Navigate } from 'react-router-dom'
+import Cover from '../setUp/Cover.jsx'
 
 function Login() {
 
-  const { register, handleSubmit, formState: { error } } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm()
   const dispatch = useDispatch()
 
   const submit = (formData)=>{
@@ -14,11 +15,15 @@ function Login() {
   dispatch(loginUser(formData))
 
   }
+
+  
   
   
   return (
 
-    <div className='relative min-h-screen w-full dark:bg-gray-600'>
+  
+      
+    <Cover>
 
       <div className='absolute top-[230px] left-[530px]'>
         <form className='border p-5 dark:border-white border-black' onSubmit={handleSubmit(submit)} >
@@ -33,8 +38,7 @@ function Login() {
 
               })}
             />
-
-          </div>
+             </div>
           <div className='m-5'>
             <input type="password" placeholder='write your password' className='w-96 p-3 h-10 border border-black dark:border-white dark:bg-gray-700 dark:text-white'
 
@@ -53,7 +57,8 @@ function Login() {
 
       </div>
 
-    </div>
+    
+    </Cover>
 
   )
 }
