@@ -84,7 +84,13 @@ const Login = async (req, res) => {
         const token = generateToken(user._id, user.role)
        
         return res.status(200)
-            .cookie("token", token)
+            .cookie("token", token, {
+
+                httpOnly:true,
+                sameSite: "strict",
+                maxAge: 7 * 24 * 60 * 60 * 1000   
+
+            })
             .json({
                 message: "User logged in successfully",
                 id: user._id,
@@ -99,11 +105,24 @@ const Login = async (req, res) => {
     }
 }
 
+const Logout = (req, res)=>{
+
+    const options = {
+
+        httpOnly:true,
+        secure:true
+
+    }
+
+   return res.status(200).clearCookie("token", options).json({ message: "User logged Out Successfully" })
+}
+
 
 
 
 export {
     Signup,
     Login,
+    Logout
     
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Navbar() {
 
@@ -41,9 +42,10 @@ useEffect(()=>{
       
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> </svg>
-        </button>
+        
+        <Link to={"/"} className='btn bg-gray-500 rounded-lg text-black mr-2'>Login</Link>
+        <Link to={"/signup"} className='btn bg-gray-500 text-black mr-2 rounded-lg'>Signup</Link>
+        
         <label className="swap swap-rotate">
   {/* this hidden checkbox controls the state */}
   <input type="checkbox" className="theme-controller" value="synthwave" />
