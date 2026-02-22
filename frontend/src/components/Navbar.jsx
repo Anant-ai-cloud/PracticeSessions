@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import {useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
+import { logoutUser } from '../setUp/authThunks'
 
 function Navbar() {
 
@@ -8,6 +9,12 @@ const [theme, setTheme ] =useState( localStorage.getItem("theme")? localStorage.
 const rootElement = document.documentElement
 
 const authStatus = useSelector( (state)=> state.auth.status )
+const user = useSelector((state)=> state.auth.userData )
+const dispatch = useDispatch()
+
+const logout = ()=>{
+  dispatch(logoutUser())
+}
 const navigate = useNavigate()
 
 useEffect(()=>{
@@ -44,44 +51,49 @@ const navItems = [
   {
     name: "Userdashboard",
     url: "/usertodos",
-    active: authStatus
+    active: authStatus && user.role === "user"
+  },
+   {
+
+    name: "Todos",
+    url: "/admintodos",
+    active: authStatus && user.role === "admin"
+
+  }, 
+    {
+
+    name: "AdminDashboard",
+    url: "/admindashboard",
+    active: authStatus && user.role === "admin"
+
   },
 
-  {
-    name: "Admindashboard",
-    url: "/admintodos",
-    active: authStatus
-  }, 
-
-  {
+   {
     name: "createTodo",
     url: "/create",
     active: authStatus
   },
-
-  {
-
-    name: "AdminSection",
-    url: "/admindashboard",
-    active: authStatus
-
-  }
 ]
-  return (
+
+
+
+return (
     <div className="navbar bg-base-100 dark:bg-gray-800 bg-yellow-50 shadow-sm  justify-between">
      
       <div className="navbar-center">
-        <a className="text-xl dark:text-white font-bold">Todo App</a>
+        <a className="text-xl text-black dark:text-white font-bold">Todo App</a>
       
       </div>
+        <div className="navbar-end">
 
-       <ul className='flex '>
+  <div className='flex gap-4'>
+       <ul className='flex gap-4 '>
       {navItems.map((item)=>
       
       item.active ? (
         <li key={item.name}>
 
-          <button onClick={()=> navigate(item.url)}>
+          <button className='btn bg-slate-600 text-white dark:bg-slate-400 rounded-lg p-2 dark:text-black' onClick={()=> navigate(item.url)}>
             {item.name}
           </button>
         </li> ) : null
@@ -89,12 +101,7 @@ const navItems = [
       )}
       </ul>
 
-
-      <div className="navbar-end">
-        
-        <Link to={"/"} className='btn bg-gray-500 rounded-lg text-black mr-2'>Login</Link>
-        <Link to={"/signup"} className='btn bg-gray-500 text-black mr-2 rounded-lg'>Signup</Link>
-        
+ {user && <button className='btn bg-slate-400 rounded-md text-white p-3 dark:text-black' onClick={logout}>Log out</button>}
         <label className="swap swap-rotate">
   {/* this hidden checkbox controls the state */}
   <input type="checkbox" className="theme-controller" value="synthwave" />
@@ -124,7 +131,7 @@ const navItems = [
         
       </div>
     </div>
-
+</div>
   )
 }
 
