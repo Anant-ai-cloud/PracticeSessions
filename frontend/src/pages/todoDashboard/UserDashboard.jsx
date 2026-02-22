@@ -9,9 +9,9 @@ function UserDashboard() {
   const dispatch = useDispatch()
   const todos = useSelector((state) => state.todo.todos)
 
-  const formatData = (iso)=>{
+  const formatDate = (iso)=>{
     const date = new Date(iso)
-    const formatted = String(date.getDate()).padStart(2,"0")+ "/"+ String(date.getMonth() + 1).padStart(2, "0") + "/"+ date.getFullYear
+    const formatted = String(date.getDate()).padStart(2,"0")+ "/"+ String(date.getMonth() + 1).padStart(2, "0") + "/"+ date.getFullYear()
     return formatted
 
   }
@@ -30,13 +30,13 @@ function UserDashboard() {
     <div>
       {
         todos.map((todo) =>
-          <div className="card bg-primary text-primary-content w-96 m-4">
+          <div className="card bg-primary text-primary-content w-96 m-4" key={todo._id}>
             <div className="card-body">
               <h2 className="card-title">{todo.title}</h2>
               { todo.description?   <p>{todo.description}</p>: "" }
             
               <div className="card-actions justify-end">
-                <button className="btn">Buy Now</button>
+                <button className="btn">{formatDate(todo.dueDate)}</button>
               </div>
             </div>
           </div>
