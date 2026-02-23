@@ -1,36 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { getUserTodos, getUrgentTodos, getNonUrgentTodos, getCompletedTodos } from '../../setUp/todosThunk.js'
+import { getUserTodos, getUrgentTodos, getNonUrgentTodos, getCompletedTodos, markCompleted } from '../../setUp/todosThunk.js'
 import { useSelector } from 'react-redux'
 
 function UserDashboard() {
 
   const dispatch = useDispatch()
+  const [checked, setChecked] = useState(false)
+  
   const todos = useSelector((state) => state.todo.todos)
 
-  const category = (value)=>{
+  const category = (value) => {
 
-    if(value==="urgent"){
+    if (value === "urgent") {
       dispatch(getUrgentTodos())
-    }else if(value=== "non-urgent"){
+    } else if (value === "non-urgent") {
       dispatch(getNonUrgentTodos())
-    }else if(value==="all"){
+    } else if (value === "all") {
       dispatch(getUserTodos())
-    } else if(value=== "completed"){
+    } else if (value === "completed") {
       dispatch(getCompletedTodos())
     }
 
 
   }
 
-  const formatDate = (iso)=>{
+  const formatDate = (iso) => {
     const date = new Date(iso)
-    const formatted = String(date.getDate()).padStart(2,"0")+ "/"+ String(date.getMonth() + 1).padStart(2, "0") + "/"+ date.getFullYear()
+    const formatted = String(date.getDate()).padStart(2, "0") + "/" + String(date.getMonth() + 1).padStart(2, "0") + "/" + date.getFullYear()
     return formatted
 
   }
+
+const completed =(id)=>{
+
+ 
+    console.log("Completed")
+   
+
+    dispatch(markCompleted(id))
   
+
+}
 
 
   useEffect(() => {
@@ -43,19 +55,36 @@ function UserDashboard() {
   return todos ? (
 
     <div>
-       <select className="select m-5" onChange={(e)=> category(e.target.value) }>
-            <option value="all">All</option>
-            <option value="urgent">Urgent</option>
-            <option value="non-urgent">Non-Urgent</option>
-            <option value= "completed">Completed</option>
-          </select>
+      <select className="select m-5" onChange={(e) => category(e.target.value)}>
+        <option value="all">All</option>
+        <option value="urgent">Urgent</option>
+        <option value="non-urgent">Non-Urgent</option>
+        <option value="completed">Completed</option>
+      </select>
       {
         todos.map((todo) =>
-          <div className={`card ${todo.completed ? "bg-green-300 text-black":"bg-primary  text-primary-content"}   w-96 m-4`} key={todo._id}>
+          <div className={`card ${todo.completed ? "bg-green-300 text-black" : "bg-primary  text-primary-content"}   w-96 m-4`} key={todo._id}>
             <div className="card-body">
-              <h2 className="card-title">{todo.title}</h2>
-              { todo.description?   <p>{todo.description}</p>: "" }
-            
+              <div className='flex justify-between'>
+                <h2 className="card-title">{todo.title}</h2>
+                {todo.completed ?
+                  <input type="checkbox" className="checkbox border-2 border-black text-black" disabled defaultChecked /> :
+                  <input type="checkbox" className="checkbox border" onChange={(e)=>{
+                   const isChecked = e.target.checked
+                   setChecked(isChecked)
+                   if(isChecked){ 
+                  
+                    e.target.className = "bg-green-300 text-black" 
+                    completed(todo._id)
+                  
+                  }
+              }} />
+    
+                }
+              </div>
+              
+              {todo.description ? <p>{todo.description}</p> : ""}
+
               <div className="card-actions justify-end">
                 <button className="btn">{formatDate(todo.dueDate)}</button>
               </div>

@@ -1,4 +1,4 @@
-import { fillTodos, setLoading } from "../store/todoSlice.js";
+import { fillTodos, setLoading, setCompleted } from "../store/todoSlice.js";
 import toast from "react-hot-toast";
 import axiosInstance from "./axios.js";
 
@@ -56,5 +56,25 @@ export const getCompletedTodos = () => async (dispatch) => {
         toast.error("Network issue")
     } finally {
         dispatch(setLoading(false))
+    }
+}
+
+export const markCompleted = (id)=> async(dispatch)=>{
+    try {
+      console.log(id)
+        const res = await axiosInstance.patch(`/completed/todo/${id}`)
+        if(!res) console.log("Can't get updated todo")
+
+        dispatch(setCompleted(res.data.completed))
+        console.log(res.data.completed)
+
+    } catch (error) {
+
+        toast.error(error.response?.data?.message ||  "Can't mark it completed")
+
+    }finally{
+
+        dispatch(setLoading(false))
+
     }
 }

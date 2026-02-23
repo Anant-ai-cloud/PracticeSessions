@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
 
     istodoLoading: true,
-    todos: null
+    todos: null,
+    completed: false
 }
 
 const todoSlice = createSlice({
@@ -20,11 +21,15 @@ const todoSlice = createSlice({
         fillTodos: (state, action)=>{
 
             state.todos = action.payload
+        },
+        setCompleted: (state, action)=>{
+
+            state.completed= action.payload
         }
     }
 
 
 })
 
-export const {setLoading, fillTodos } = todoSlice.actions
+export const {setLoading, fillTodos, setCompleted } = todoSlice.actions
 export default todoSlice.reducer

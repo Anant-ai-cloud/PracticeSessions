@@ -7,7 +7,7 @@ function Authprotect({ children, authentication = true }) {
 
   const navigate = useNavigate()
   const authStatus = useSelector(state => state.auth.status)
-  console.log(authStatus)
+  
   const user = useSelector(state=> state.auth.userData)
  
  
