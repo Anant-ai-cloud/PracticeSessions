@@ -18,9 +18,7 @@ function Navbar() {
     dispatch(logoutUser())
   }
 
-  const category = (value)=>{
-
-  }
+  
 
   useEffect(() => {
     if (theme === "dark") {
@@ -93,12 +91,7 @@ function Navbar() {
 
         <div className='flex gap-3'>
 
-          <select className="select" onChange={(value)=> category(value) }>
-            <option value="all">All</option>
-            <option value="urgent">Urgent</option>
-            <option value="non-urgent">Non-Urgent</option>
-            <option value= "completd">Completed</option>
-          </select>
+         
 
           <ul className='flex gap-3 '>
             {navItems.map((item) =>

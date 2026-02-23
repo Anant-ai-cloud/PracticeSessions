@@ -1,13 +1,28 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { getUserTodos } from '../../setUp/todosThunk.js'
+import { getUserTodos, getUrgentTodos, getNonUrgentTodos, getCompletedTodos } from '../../setUp/todosThunk.js'
 import { useSelector } from 'react-redux'
 
 function UserDashboard() {
 
   const dispatch = useDispatch()
   const todos = useSelector((state) => state.todo.todos)
+
+  const category = (value)=>{
+
+    if(value==="urgent"){
+      dispatch(getUrgentTodos())
+    }else if(value=== "non-urgent"){
+      dispatch(getNonUrgentTodos())
+    }else if(value==="all"){
+      dispatch(getUserTodos())
+    } else if(value=== "completed"){
+      dispatch(getCompletedTodos())
+    }
+
+
+  }
 
   const formatDate = (iso)=>{
     const date = new Date(iso)
@@ -28,9 +43,15 @@ function UserDashboard() {
   return todos ? (
 
     <div>
+       <select className="select m-5" onChange={(e)=> category(e.target.value) }>
+            <option value="all">All</option>
+            <option value="urgent">Urgent</option>
+            <option value="non-urgent">Non-Urgent</option>
+            <option value= "completed">Completed</option>
+          </select>
       {
         todos.map((todo) =>
-          <div className="card bg-primary text-primary-content w-96 m-4" key={todo._id}>
+          <div className={`card ${todo.completed ? "bg-green-300 text-black":"bg-primary  text-primary-content"}   w-96 m-4`} key={todo._id}>
             <div className="card-body">
               <h2 className="card-title">{todo.title}</h2>
               { todo.description?   <p>{todo.description}</p>: "" }
