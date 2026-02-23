@@ -63,18 +63,17 @@ const completed =(id)=>{
       </select>
       {
         todos.map((todo) =>
-          <div className={`card ${todo.completed ? "bg-green-300 text-black" : "bg-primary  text-primary-content"}   w-96 m-4`} key={todo._id}>
+          <div className={`card ${todo.completed ? "bg-green-300 text-black" : "bg-primary  text-primary-content"}   w-96 m-4`}  key={todo._id}>
             <div className="card-body">
               <div className='flex justify-between'>
                 <h2 className="card-title">{todo.title}</h2>
                 {todo.completed ?
                   <input type="checkbox" className="checkbox border-2 border-black text-black" disabled defaultChecked /> :
-                  <input type="checkbox" className="checkbox border" onChange={(e)=>{
+                  <input type="checkbox" className="checkbox border" onClick={(e)=>{ e.target.classList.add("bg-green-300", "text-black")}} onChange={(e)=>{
                    const isChecked = e.target.checked
                    setChecked(isChecked)
                    if(isChecked){ 
-                  
-                    e.target.className = "bg-green-300 text-black" 
+                  e.target.disabled = true                    
                     completed(todo._id)
                   
                   }
