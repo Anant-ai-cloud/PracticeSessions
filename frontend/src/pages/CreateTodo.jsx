@@ -4,9 +4,10 @@ import { useForm, Controller } from "react-hook-form"
 import { DayPicker } from "react-day-picker"
 function CreateTodo() {
 
-  const [date, setDate] = useState()
 
   const { register, handleSubmit, formState: { errors }, control, watch } = useForm()
+
+  const selectedDate = watch("date")
 
   return (
     <div>
@@ -19,17 +20,23 @@ function CreateTodo() {
           <div>
             <label htmlFor="title">Title <span className='text-red-500'>*</span></label>
             <br />
-            <input id='title' type="text" className='input w-[400px] border dark:border-white focus:outline-none' />
+            <input id='title' type="text" className='input w-[400px] border dark:border-white focus:outline-none'
+            {...register("title",{
+              required: true
+            })}
+            />
           </div>
           <div className='mt-3'>
 
             <label htmlFor="desc">Description</label>
-            <textarea id='desc' className="textarea h-24 w-[400px] focus: outline-none border dark:border-white " placeholder="Bio"></textarea>
+            <textarea id='desc' className="textarea h-24 w-[400px] focus: outline-none border dark:border-white"
+            {...register("description")}
+            />
 
           </div>
 
-          <button popoverTarget="rdp-popover" className="input input-border" style={{ anchorName: "--rdp" } }>
-          {watch("date") ? watch("date").toLocaleDateString() : "Pick a date"}
+          <button popoverTarget="rdp-popover" className="input input-border focus: outline-none border border-white mt-3 p-2" style={{ anchorName: "--rdp" } }>
+          {selectedDate ? selectedDate.toLocaleDateString() : "Pick a date"}
            
            </button> 
           <div popover="auto" id="rdp-popover" className="dropdown h-50px" style={{ positionAnchor: "--rdp" }}>
@@ -52,6 +59,12 @@ function CreateTodo() {
               )}
             />
           </div>
+             <br />
+          <select name="category" id="category" className='mt-3 focus: outline-none p-1 rounded-md'{...register("category")}>
+            <option value="non-urgent">non-urgent</option>
+           
+            <option value="urgent">Urgent</option>
+          </select>
           
 
 
