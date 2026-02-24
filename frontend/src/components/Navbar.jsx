@@ -81,7 +81,7 @@ function Navbar() {
 
 
   return (
-    <div className="navbar bg-base-100 dark:bg-gray-800 bg-yellow-50 shadow-sm  justify-between">
+    <div className="navbar bg-base-100 dark:bg-gray-800 bg-yellow-50 shadow-sm  justify-between sticky top-0 z-10">
 
       <div className="navbar-center">
         <a className="text-xl text-black dark:text-white font-bold">Todo App</a>

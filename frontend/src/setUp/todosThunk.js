@@ -1,4 +1,4 @@
-import { fillTodos, setLoading, setCompleted } from "../store/todoSlice.js";
+import { fillTodos, setLoading } from "../store/todoSlice.js";
 import toast from "react-hot-toast";
 import axiosInstance from "./axios.js";
 
@@ -65,7 +65,7 @@ export const markCompleted = (id)=> async(dispatch)=>{
         const res = await axiosInstance.patch(`/completed/todo/${id}`)
         if(!res) console.log("Can't get updated todo")
 
-        dispatch(setCompleted(res.data.completed))
+       
         console.log(res.data.completed)
 
     } catch (error) {
@@ -76,5 +76,18 @@ export const markCompleted = (id)=> async(dispatch)=>{
 
         dispatch(setLoading(false))
 
+    }
+}
+
+export const createTodo = (data)=> async(dispatch)=>{
+    try {
+        const res = await axiosInstance.post("/todos", data)
+
+        if(!res) console.log(" Some error occurred in create Todo ")
+
+        toast.success("Todo Created Successfully")
+        
+    } catch (error) {
+        toast.error(error.response?.data?.message || "Can't Create Todo")
     }
 }

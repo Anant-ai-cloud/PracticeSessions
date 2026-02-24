@@ -8,7 +8,7 @@ function UserDashboard() {
 
   const dispatch = useDispatch()
   const [checked, setChecked] = useState(false)
-  
+
   const todos = useSelector((state) => state.todo.todos)
 
   const category = (value) => {
@@ -33,16 +33,16 @@ function UserDashboard() {
 
   }
 
-const completed =(id)=>{
+  const completed = (id) => {
 
- 
+
     console.log("Completed")
-   
+
 
     dispatch(markCompleted(id))
-  
 
-}
+
+  }
 
 
   useEffect(() => {
@@ -61,39 +61,41 @@ const completed =(id)=>{
         <option value="non-urgent">Non-Urgent</option>
         <option value="completed">Completed</option>
       </select>
-      {
-        todos.map((todo) =>
-          <div className={`card ${todo.completed ? "bg-green-300 text-black" : "bg-primary  text-primary-content"}   w-96 m-4`}  key={todo._id}>
-            <div className="card-body">
-              <div className='flex justify-between'>
-                <h2 className="card-title">{todo.title}</h2>
-                {todo.completed ?
-                  <input type="checkbox" className="checkbox border-2 border-black text-black" disabled defaultChecked /> :
-                  <input type="checkbox" className="checkbox border" onClick={(e)=>{ e.target.classList.add("bg-green-300", "text-black")}} onChange={(e)=>{
-                   const isChecked = e.target.checked
-                   setChecked(isChecked)
-                   if(isChecked){ 
-                  e.target.disabled = true                    
-                    completed(todo._id)
-                  
-                  }
-              }} />
-    
-                }
-              </div>
-              
-              {todo.description ? <p>{todo.description}</p> : ""}
 
-              <div className="card-actions justify-end">
-                <button className="btn">{formatDate(todo.dueDate)}</button>
+      <div className='flex flex-wrap justify-center '>
+        {
+          todos.map((todo) =>
+            <div className={`card ${todo.completed ? "bg-green-300 text-black" : "bg-primary  text-primary-content"}   w-96 m-4`} key={todo._id}>
+              <div className="card-body">
+                <div className='flex justify-between'>
+                  <h2 className="card-title">{todo.title}</h2>
+                  {todo.completed ?
+                    <input type="checkbox" className="checkbox border-2 border-black text-black" disabled defaultChecked /> :
+                    <input type="checkbox" className="checkbox border" onClick={(e) => { e.target.classList.add("bg-green-300", "text-black") }} onChange={(e) => {
+                      const isChecked = e.target.checked
+                      setChecked(isChecked)
+                      if (isChecked) {
+                        e.target.disabled = true
+                        completed(todo._id)
+
+                      }
+                    }} />
+
+                  }
+                </div>
+
+                {todo.description ? <p>{todo.description}</p> : ""}
+
+                <div className="card-actions justify-end">
+                  <button className="btn">{formatDate(todo.dueDate)}</button>
+                </div>
               </div>
             </div>
-          </div>
 
-        )
-      }
+          )
+        }
+      </div>
     </div>
-
   ) : <div> Loading</div>
 }
 

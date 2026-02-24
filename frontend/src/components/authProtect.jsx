@@ -7,7 +7,7 @@ function Authprotect({ children, authentication = true }) {
 
   const navigate = useNavigate()
   const authStatus = useSelector(state => state.auth.status)
-  
+  const [Loading, setLoading] = useState(true)
   const user = useSelector(state=> state.auth.userData)
  
  
@@ -22,12 +22,13 @@ function Authprotect({ children, authentication = true }) {
      else navigate("/admintodos")
 
     }
+    setLoading(false)
     
 
   }, [navigate, authStatus, authentication])
 
   
-  return <> {children} </>
+  return Loading? <Pageloading/>: <> {children} </>
 }
 
 export default Authprotect
