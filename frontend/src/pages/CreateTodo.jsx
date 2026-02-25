@@ -1,24 +1,47 @@
 import React, { useState } from 'react'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { useForm, Controller } from "react-hook-form"
+import { createTodo } from '../setUp/todosThunk.js'
 import { DayPicker } from "react-day-picker"
 function CreateTodo() {
 
 
-  const { register, handleSubmit, formState: { errors }, control, watch } = useForm()
+  const { register, handleSubmit, formState: { errors }, control, watch, reset } = useForm()
+  const dispatch = useDispatch()
 
-  const selectedDate = watch("date")
+  const selectedDate = watch("dueDate")
+  const create = (formData)=>{
+    dispatch(createTodo(
+      {
+        title: formData.title,
+        description: formData.description.trim().length > 0? formData.description : undefined,
+        dueDate: formData.dueDate?.toISOString() || formData.dueDate,
+        category: formData.category
+      }
+    ))
+    console.log(formData.description.trim().length > 0? formData.description : undefined)
+   
+     
+  }
 
   return (
     <div>
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
+     
       <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal()}>open modal</button>
+   
       <dialog id="my_modal_1" className="modal">
+         
+         <form onSubmit={ handleSubmit(create) }>
+          
+          
         <div className="modal-box w-[500px]">
-          {/* <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click the button below to close</p> */}
+        
           <div>
+              
+            
             <label htmlFor="title">Title <span className='text-red-500'>*</span></label>
+            <button type='button' className='btn relative left-[400px]' onClick={()=>{ document.getElementById("my_modal_1").close(); reset()}}>X</button>
+            
             <br />
             <input id='title' type="text" className='input w-[400px] border dark:border-white focus:outline-none'
             {...register("title",{
@@ -35,7 +58,7 @@ function CreateTodo() {
 
           </div>
 
-          <button popoverTarget="rdp-popover" className="input input-border focus: outline-none border border-white mt-3 p-2" style={{ anchorName: "--rdp" } }>
+          <button type='button' popoverTarget="rdp-popover" className="input input-border focus: outline-none border border-white mt-3 p-2" style={{ anchorName: "--rdp" } }>
           {selectedDate ? selectedDate.toLocaleDateString() : "Pick a date"}
            
            </button> 
@@ -43,7 +66,7 @@ function CreateTodo() {
 
 
               <Controller
-              name='date'
+              name='dueDate'
               control={control}
               render={({ field }) => (
                 <>
@@ -65,17 +88,14 @@ function CreateTodo() {
            
             <option value="urgent">Urgent</option>
           </select>
-          
+          <br />
+          <button type='submit' className='btn dark:bg-green-300 dark:text-black w-[100px] font-bold mt-3' onClick={()=>{document.getElementById("my_modal_1").close(); reset()}}>Create</button>
 
-
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
-          </div>
+  
         </div>
+        </form>
       </dialog>
+     
     </div>
 
   )
