@@ -87,7 +87,8 @@ function UserDashboard() {
                 {todo.description ? <p>{todo.description}</p> : ""}
 
                 <div className="card-actions justify-end">
-                  <button className="btn">{formatDate(todo.dueDate)}</button>
+                  {todo.dueDate?  <button className="btn">{formatDate(todo.dueDate)}</button>: undefined}
+                 
                 </div>
               </div>
             </div>

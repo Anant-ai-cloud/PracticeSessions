@@ -79,6 +79,19 @@ export const markCompleted = (id)=> async(dispatch)=>{
     }
 }
 
+export const deleteTodo = (id)=> async(dispatch)=>{
+    try {
+        const res = await axiosInstance.post(`/todos/${id}`)
+        if(!res) console.log("Can't delete Todo")
+        
+        toast.success("Todo deleted Successfully")
+        
+    } catch (error) {
+        console.log("error in delete todo")
+        toast.error(error.response?.data?.message)
+    }
+}
+
 export const createTodo = (data)=> async(dispatch)=>{
     try {
         const res = await axiosInstance.post("/todos", data)
@@ -86,7 +99,7 @@ export const createTodo = (data)=> async(dispatch)=>{
         if(!res) console.log(" Some error occurred in create Todo ")
 
         toast.success("Todo Created Successfully")
-        
+        return res.data
     } catch (error) {
         toast.error(error.response?.data?.message || "Can't Create Todo")
     }

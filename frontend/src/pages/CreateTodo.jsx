@@ -10,8 +10,8 @@ function CreateTodo() {
   const dispatch = useDispatch()
 
   const selectedDate = watch("dueDate")
-  const create = (formData)=>{
-    dispatch(createTodo(
+  const create =  (formData)=>{
+     dispatch(createTodo(
       {
         title: formData.title,
         description: formData.description.trim().length > 0? formData.description : undefined,
@@ -19,9 +19,8 @@ function CreateTodo() {
         category: formData.category
       }
     ))
-    console.log(formData.description.trim().length > 0? formData.description : undefined)
-   
-     
+     reset()
+  
   }
 
   return (
@@ -31,7 +30,7 @@ function CreateTodo() {
    
       <dialog id="my_modal_1" className="modal">
          
-         <form onSubmit={ handleSubmit(create) }>
+         <form onSubmit={handleSubmit(create) }>
           
           
         <div className="modal-box w-[500px]">
@@ -89,7 +88,7 @@ function CreateTodo() {
             <option value="urgent">Urgent</option>
           </select>
           <br />
-          <button type='submit' className='btn dark:bg-green-300 dark:text-black w-[100px] font-bold mt-3' onClick={()=>{document.getElementById("my_modal_1").close(); reset()}}>Create</button>
+          <button type='submit' className='btn dark:bg-green-300 dark:text-black w-[100px] font-bold mt-3' onClick={()=>document.getElementById("my_modal_1").close()}>Create</button>
 
   
         </div>
