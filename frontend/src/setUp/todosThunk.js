@@ -83,26 +83,23 @@ export const markCompleted = (id)=> async(dispatch)=>{
 export const deleteTodo = (id)=> async(dispatch, getState)=>{
     try {
         const res = await axiosInstance.delete(`/todos/${id}`)
+
         if(!res) console.log("Can't delete Todo")
             const state = getState()
         
          const oldTodos =  state.todo.todos
-         console.log(oldTodos)
-          const todoId = res.data.todo._id 
-          console.log(todoId)
-          
-          const newTodos= todos.filter(todo => todo._id !== todoId )
-          console.log(newTodos)
-          
-          dispatch(fillTodos(newTodos))
+         const todoId = res.data.todo._id 
+         
+         const newTodos= oldTodos.filter(todo => todo._id != todoId )
+         
+         dispatch(fillTodos(newTodos))
              
-        
         toast.success(res.data?.message)
         
     } catch (error) {
-        console.log("error in delete todo")
-        // toast.error(error.response?.data?.message)
-        toast.error("Todo can't delete")
+
+        toast.error(error.response?.data?.message)
+        
     }
 }
 
@@ -119,11 +116,26 @@ export const createTodo = (data)=> async(dispatch)=>{
     }
 }
 
-export const updateTodo =(data, id)=> async(dispatch)=>{
+export const updateTodo =(data, id)=> async(dispatch, getState)=>{
     try {
+
         const res = await axiosInstance.put(`/todos/${id}`, data)
         if(!res) console.log("error occurred in updateTodo")
+
+        const state= getState()
+        const todos = state.todo.todos
+
         console.log(res.data?.todo)
+      const updatedTodo =  res.data.todo
+      const newTodos = todos.map((todo)=> {
+        if(todo._id === updatedTodo._id){
+            todo.title = updatedTodo.title
+            todo.description = updatedTodo.description
+            return 
+        }
+        
+      })
+
      
         toast.success("Todo updated Successfully")
         
