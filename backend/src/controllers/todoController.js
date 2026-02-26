@@ -88,7 +88,10 @@ const editTodo = async (req, res) => {
 
                 )
 
-                return res.status(200).json(updatedtodo, "todo updated successfully")
+                return res.status(200).json({
+                    todo: updatedtodo, 
+                    message: "todo updated successfully"
+                })
             } else {
                 return res.status(400).json({ message: "User can edit their own todo only" })
             }
@@ -106,7 +109,10 @@ const editTodo = async (req, res) => {
             { new: true }
         ).select("-password")
 
-        return res.status(200).json(updatedtodo, "todo updated successfully")
+        return res.status(200).json({
+            todo: updatedtodo,
+            message: "todo updated successfully"
+        })
 
 
 
@@ -134,17 +140,17 @@ const deleteTodo = async (req, res) => {
             if (userId === todoUserId) {
 
                 const deleted = await Todo.findByIdAndDelete(todoId)
-                if (!deleted) return res.status(400).json({ message: "can'nt delete the todo due to some issue" })
-                return res.status(200).json({ message: "Todo deleted successfully" })
+                if (!deleted) return res.status(400).json({ message: "can't delete the todo due to some issue" })
+                return res.status(200).json({ todo: deleted, message: "Todo deleted successfully" })
             } else {
                 return res.status(400).json({ message: "user can delete their own todo only" })
             }
         }
 
         const deleted = await Todo.findByIdAndDelete(todoId)
-        if (!deleted) return res.status(400).json({ message: "can't delete the todo due to some issue" })
+        if (!deleted) return res.status(400).json({  message: "can't delete the todo due to some issue" })
 
-        return res.status(200).json({ message: "Todo deleted successfully" })
+        return res.status(200).json({ todo: deleted, message: "Todo deleted successfully" })
 
     } catch (error) {
         console.log(error)

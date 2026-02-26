@@ -1,6 +1,7 @@
 import { fillTodos, setLoading } from "../store/todoSlice.js";
 import toast from "react-hot-toast";
 import axiosInstance from "./axios.js";
+import { useSelector } from "react-redux";
 
 export const getUserTodos = () => async (dispatch) => {
     try {
@@ -79,16 +80,29 @@ export const markCompleted = (id)=> async(dispatch)=>{
     }
 }
 
-export const deleteTodo = (id)=> async(dispatch)=>{
+export const deleteTodo = (id)=> async(dispatch, getState)=>{
     try {
-        const res = await axiosInstance.post(`/todos/${id}`)
+        const res = await axiosInstance.delete(`/todos/${id}`)
         if(!res) console.log("Can't delete Todo")
+            const state = getState()
         
-        toast.success("Todo deleted Successfully")
+         const oldTodos =  state.todo.todos
+         console.log(oldTodos)
+          const todoId = res.data.todo._id 
+          console.log(todoId)
+          
+          const newTodos= todos.filter(todo => todo._id !== todoId )
+          console.log(newTodos)
+          
+          dispatch(fillTodos(newTodos))
+             
+        
+        toast.success(res.data?.message)
         
     } catch (error) {
         console.log("error in delete todo")
-        toast.error(error.response?.data?.message)
+        // toast.error(error.response?.data?.message)
+        toast.error("Todo can't delete")
     }
 }
 
@@ -102,5 +116,18 @@ export const createTodo = (data)=> async(dispatch)=>{
         return res.data
     } catch (error) {
         toast.error(error.response?.data?.message || "Can't Create Todo")
+    }
+}
+
+export const updateTodo =(data, id)=> async(dispatch)=>{
+    try {
+        const res = await axiosInstance.put(`/todos/${id}`, data)
+        if(!res) console.log("error occurred in updateTodo")
+        console.log(res.data?.todo)
+     
+        toast.success("Todo updated Successfully")
+        
+    } catch (error) {
+        toast.error(error.response?.data?.message)
     }
 }
