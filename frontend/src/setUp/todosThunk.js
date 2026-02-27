@@ -60,54 +60,54 @@ export const getCompletedTodos = () => async (dispatch) => {
     }
 }
 
-export const markCompleted = (id)=> async(dispatch)=>{
+export const markCompleted = (id) => async (dispatch) => {
     try {
-      console.log(id)
+        console.log(id)
         const res = await axiosInstance.patch(`/completed/todo/${id}`)
-        if(!res) console.log("Can't get updated todo")
+        if (!res) console.log("Can't get updated todo")
 
-       
+
         console.log(res.data.completed)
 
     } catch (error) {
 
-        toast.error(error.response?.data?.message ||  "Can't mark it completed")
+        toast.error(error.response?.data?.message || "Can't mark it completed")
 
-    }finally{
+    } finally {
 
         dispatch(setLoading(false))
 
     }
 }
 
-export const deleteTodo = (id)=> async(dispatch, getState)=>{
+export const deleteTodo = (id) => async (dispatch, getState) => {
     try {
         const res = await axiosInstance.delete(`/todos/${id}`)
 
-        if(!res) console.log("Can't delete Todo")
-            const state = getState()
-        
-         const oldTodos =  state.todo.todos
-         const todoId = res.data.todo._id 
-         
-         const newTodos= oldTodos.filter(todo => todo._id != todoId )
-         
-         dispatch(fillTodos(newTodos))
-             
+        if (!res) console.log("Can't delete Todo")
+        const state = getState()
+
+        const oldTodos = state.todo.todos
+        const todoId = res.data.todo._id
+
+        const newTodos = oldTodos.filter(todo => todo._id != todoId)
+
+        dispatch(fillTodos(newTodos))
+
         toast.success(res.data?.message)
-        
+
     } catch (error) {
 
         toast.error(error.response?.data?.message)
-        
+
     }
 }
 
-export const createTodo = (data)=> async(dispatch)=>{
+export const createTodo = (data) => async (dispatch) => {
     try {
         const res = await axiosInstance.post("/todos", data)
 
-        if(!res) console.log(" Some error occurred in create Todo ")
+        if (!res) console.log(" Some error occurred in create Todo ")
 
         toast.success("Todo Created Successfully")
         return res.data
@@ -116,29 +116,33 @@ export const createTodo = (data)=> async(dispatch)=>{
     }
 }
 
-export const updateTodo =(data, id)=> async(dispatch, getState)=>{
+export const updateTodo = (data, id) => async (dispatch, getState) => {
     try {
 
         const res = await axiosInstance.put(`/todos/${id}`, data)
-        if(!res) console.log("error occurred in updateTodo")
+        if (!res) console.log("error occurred in updateTodo")
 
-        const state= getState()
+        const state = getState()
         const todos = state.todo.todos
 
         console.log(res.data?.todo)
-      const updatedTodo =  res.data.todo
-      const newTodos = todos.map((todo)=> {
-        if(todo._id === updatedTodo._id){
-            todo.title = updatedTodo.title
-            todo.description = updatedTodo.description
-            return 
-        }
-        
-      })
+        const updatedTodo = res.data.todo
+        const newTodos = todos.map((todo) => {
+            if (todo._id === updatedTodo._id) {
+                return {
+                    ...todo,
+                    title: updatedTodo.title,
+                    description: updatedTodo.description
+                }
+            }
+            return todo
+        })
 
-     
+        dispatch(fillTodos(newTodos))
+        console.log(newTodos)
+
         toast.success("Todo updated Successfully")
-        
+
     } catch (error) {
         toast.error(error.response?.data?.message)
     }
