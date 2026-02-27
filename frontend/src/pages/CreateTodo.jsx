@@ -10,7 +10,8 @@ function CreateTodo() {
   const dispatch = useDispatch()
 
   const selectedDate = watch("dueDate")
-  const create =  (formData)=>{
+  const create =  (e,formData)=>{
+    e.preventDefault()
      dispatch(createTodo(
       {
         title: formData.title,
