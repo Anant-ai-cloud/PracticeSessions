@@ -33,8 +33,12 @@ function UserDashboard() {
   const openModal = (todo) => {
     setSelectedTodo(todo)
     setValue("title", todo.title)
+    setValue("description", todo.description)
     document.getElementById('my_modal_1').showModal()
 
+  }
+  const handleUpdate = (data) => {
+    console.log(data)
   }
 
   const formatDate = (iso) => {
@@ -74,6 +78,14 @@ function UserDashboard() {
       </select>
 
       <div className='flex flex-wrap justify-center '>
+
+        <dialog id="my_modal_1">
+          <form onSubmit={handleSubmit(handleUpdate)}>
+            <input {...register("title")} />
+            <input {...register("description")} />
+            <button type="submit">Update</button>
+          </form>
+        </dialog>
 
         {
           todos.map((todo) =>
