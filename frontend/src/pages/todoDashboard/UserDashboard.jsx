@@ -80,11 +80,21 @@ function UserDashboard() {
       <div className='flex flex-wrap justify-center '>
 
         <dialog id="my_modal_1">
+          <div className='flex gap-6'>
+           <button className='btn text-white' onClick={()=> document.getElementById("my_modal_1").close()}>X</button>
           <form onSubmit={handleSubmit(handleUpdate)}>
-            <input {...register("title")} />
-            <input {...register("description")} />
+            <div>
+            <label htmlFor="title">Title</label>
+         
+            <input id='title' {...register("title")} />
+            </div>
+           <div>
+           <label htmlFor="description"> Description </label>
+            <input id='description' {...register("description")} />
+            </div>
             <button type="submit">Update</button>
           </form>
+          </div>
         </dialog>
 
         {
