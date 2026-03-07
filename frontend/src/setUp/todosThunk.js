@@ -118,7 +118,7 @@ export const createTodo = (data) => async (dispatch) => {
 
 export const updateTodo = (data, id) => async (dispatch, getState) => {
     try {
-
+       console.log("Update todo Thunk")
         const res = await axiosInstance.put(`/todos/${id}`, data)
         if (!res) console.log("error occurred in updateTodo")
 
@@ -145,5 +145,20 @@ export const updateTodo = (data, id) => async (dispatch, getState) => {
 
     } catch (error) {
         toast.error(error.response?.data?.message)
+    }
+}
+
+export const adminTodos = ()=> async (dispatch) =>{
+    try {
+
+        const res = await axiosInstance.get("/admin/todos")
+        
+        if(!res) console.log("Some error occurred in get admin todos")
+        dispatch(fillTodos(res.data))
+
+    } catch (error) {
+        toast.error("Network issue")
+    } finally{
+        dispatch(setLoading(false))
     }
 }

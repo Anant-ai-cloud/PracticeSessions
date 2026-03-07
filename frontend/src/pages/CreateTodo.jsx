@@ -27,7 +27,7 @@ function CreateTodo() {
   return (
     <div>
      
-      <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal()}>open modal</button>
+      <button className="btn p-4 m-5" onClick={() => document.getElementById('my_modal_1').showModal()}>Create Todo</button>
    
       <dialog id="my_modal_1" className="modal">
          

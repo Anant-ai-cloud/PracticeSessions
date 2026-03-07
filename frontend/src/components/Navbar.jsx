@@ -56,13 +56,7 @@ function Navbar() {
       url: "/usertodos",
       active: authStatus && user.role === "user"
     },
-    {
-
-      name: "Todos",
-      url: "/admintodos",
-      active: authStatus && user.role === "admin"
-
-    },
+   
     {
 
       name: "AdminDashboard",
