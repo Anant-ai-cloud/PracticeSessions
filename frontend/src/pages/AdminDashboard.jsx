@@ -1,18 +1,33 @@
 import { useState } from 'react'
-import { adminTodos, markCompleted, deleteTodo } from '../setUp/todosThunk.js'
+import { adminTodos, markCompleted, deleteTodo, updateTodo } from '../setUp/todosThunk.js'
 import { useDispatch, useSelector } from 'react-redux'
+import { useForm } from 'react-hook-form'
 
 
 function AdminDashboard() {
 
   const [checked, setChecked] = useState(false)
+  const [id, setId] = useState("")
+
+  const {register, handleSubmit, setValue} = useForm()
 
   const dispatch = useDispatch()
   const todos = useSelector(state => state.todo.todos)
 
   const gettingTodos = () => {
     dispatch(adminTodos())
+  }
 
+  const openModal = (todo)=>{
+    setId(todo._id)
+    setValue("title", todo.title)
+    setValue("description", todo.description)
+    document.getElementById("my_modal_1").showModal()
+
+  }
+
+  const handleUpdate = (data)=>{
+   dispatch(updateTodo(data, id))
   }
   const formatDate = (iso) => {
     const date = new Date(iso)
@@ -34,7 +49,7 @@ function AdminDashboard() {
     <>
       <div className='flex gap-8'>
 
-        <div className='w-[120px] min-h-[670px] rounded-md dark:bg-gray-600'>
+        <div className='w-[150px] min-h-[670px] rounded-md dark:bg-gray-600'>
           <ul className='align-middle'>
             <li><button className='hover:bg-slate-400 p-3 rounded-xl ml-3' onClick={() => gettingTodos()}>All Todos </button></li>
             <li><button className='hover:bg-slate-400 p-3 rounded-xl ml-3'>All Users </button></li>
@@ -51,7 +66,7 @@ function AdminDashboard() {
               <div>
                  
                 <label htmlFor="title">Title</label>
-                 <button  className='btn text-white relative left-[420px] bottom-5' onClick={() => document.getElementById("my_modal_1").close()}>X</button>
+                 <button type='button' className='btn text-white relative left-[420px] bottom-5' onClick={() => document.getElementById("my_modal_1").close()}>X</button>
                  
                  <br />
                 <input id='title' type="text" className='input w-[400px] border dark:border-white focus:outline-none p-1'

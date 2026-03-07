@@ -4,6 +4,7 @@ const initialState = {
 
     istodoLoading: true,
     todos: null,
+    users: null
     
 }
 
@@ -22,6 +23,10 @@ const todoSlice = createSlice({
 
             state.todos = action.payload
         },
+
+        fillUsers: (state, action)=>{
+            state.users = action.payload
+        }
       
     }
 
