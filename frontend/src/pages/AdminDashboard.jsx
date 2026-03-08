@@ -35,6 +35,7 @@ function AdminDashboard() {
   }
 
   const changeStatus = (id) => {
+    console.log("change Status func")
     dispatch(changeUserStatus(id))
   }
 
@@ -200,7 +201,7 @@ function AdminDashboard() {
 
                 <div key={user._id}>
 
-                  <figure className="max-w-80 h-[360px] rounded-2xl">
+                  <div className="max-w-80 h-[360px] rounded-2xl">
 
 
                     <div className='relative z-10 top-[130px] left-[160px]'>
@@ -226,7 +227,7 @@ function AdminDashboard() {
 
                     </div>
                     <img src="https://cdn4.vectorstock.com/i/1000x1000/05/73/unknown-person-user-icon-line-vector-35260573.jpg" className='opacity-30' alt="3D card" />
-                  </figure>
+                  </div>
                    </div>
 
 
