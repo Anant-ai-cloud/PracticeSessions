@@ -1,4 +1,4 @@
-import { fillTodos, setLoading } from "../store/todoSlice.js";
+import { fillTodos, setLoading, fillUsers } from "../store/todoSlice.js";
 import toast from "react-hot-toast";
 import axiosInstance from "./axios.js";
 import { useSelector } from "react-redux";
@@ -159,6 +159,77 @@ export const adminTodos = ()=> async (dispatch) =>{
     } catch (error) {
         toast.error("Network issue")
     } finally{
+        dispatch(setLoading(false))
+    }
+}
+
+export const getAllUsers = ()=> async(dispatch)=>{
+    try {
+
+        const res = await axiosInstance.get("/admin/users")
+        if(!res) console.log("Some error Occurred in getAllUsers")
+        dispatch(fillUsers(res.data))
+        dispatch(fillTodos(null))
+
+    } catch (error) {
+        toast.error("Network Issue")
+        
+    }finally{
+        dispatch(setLoading(false))
+    }
+}
+
+export const changeUserStatus = (id)=> async(dispatch, getState)=>{
+    try {
+        
+        const res = await axiosInstance.patch(`/admin/users/${id}`)
+        if(!res) console.log("some error occurred in changeUserStatus")
+        
+        const state = getState()
+        const users = state.todo.users
+        const updatedUser = res.data
+
+        const newUsers = users.map((user)=>{
+              if(user._id === updatedUser._id){
+                return {
+                    ...user,
+                    role: updatedUser.role
+                }
+              }
+              return user
+
+        }
+        )
+
+        dispatch(fillUsers(newUsers))
+        toast.success("User status changed successfully")
+        
+
+    } catch (error) {
+        toast.error("Network issue")
+    }finally{
+        dispatch(setLoading(false))
+    }
+}
+
+export const removeUser= (id)=> async(dispatch, getState)=>{
+    try {
+
+        const res = await axiosInstance.delete(`/admin/user/${id}`)
+        if(!res) console.log("Some error in remove user")
+        
+        const state = getState()
+        const deletedUser = res.data.deletedUser
+        console.log(deletedUser)
+        const users = state.todo.users
+
+        const newUsers = users.filter((user)=> user._id !== deletedUser._id)
+
+        dispatch(fillUsers(newUsers))
+        toast.success(res.data?.message)
+    } catch (error) {
+        toast.error("Network issue")
+    }finally{
         dispatch(setLoading(false))
     }
 }

@@ -33,5 +33,5 @@ const todoSlice = createSlice({
 
 })
 
-export const {setLoading, fillTodos } = todoSlice.actions
+export const {setLoading, fillTodos, fillUsers } = todoSlice.actions
 export default todoSlice.reducer

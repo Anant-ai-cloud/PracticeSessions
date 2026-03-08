@@ -160,7 +160,10 @@ const deleteTodo = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({}).sort({ createdAt: 1 })
+
+        const userId = req.user._id
+        console.log(userId)
+        const users = await User.find({ _id: { $ne: userId }}).sort({ createdAt: 1 }).select("-password")
 
         if (!users) return res.status(400).json({ message: "Unable to find users" })
 
@@ -195,7 +198,7 @@ const changeUserStatus = async (req, res) => {
         ).select("-password")
         if (!updatedUser) return res.status(400).json({ message: "User's status cannot get edited" })
 
-        return res.status(200).json(updatedUser, "User's status edited successfully")
+        return res.status(200).json(updatedUser)
 
     } catch (error) {
         console.log(error)
@@ -347,7 +350,7 @@ const deleteUser = async (req, res) => {
         const userId = req.params.id
         const deletedUser = await User.findByIdAndDelete(userId)
         if (!deletedUser) return res.status(400).json({ message: "User not exist" })
-        return res.status(200).json({ message: "user deleted successfully" })
+        return res.status(200).json({ deletedUser, message: "user deleted successfully" })
       } catch (error) {
         console.log(error)
         return res.status(500).json({ message: "internal server error" })

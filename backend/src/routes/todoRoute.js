@@ -25,7 +25,7 @@ router.delete("/todos/:id", deleteTodo)
 router.get("/admin/users", checkingRole, getAllUsers)
 
 //for admin change status
-router.post("/admin/users/:id", checkingRole, changeUserStatus)
+router.patch("/admin/users/:id", checkingRole, changeUserStatus)
 
 //mark todo as completed
 router.patch("/completed/todo/:id", todoCompleted)
